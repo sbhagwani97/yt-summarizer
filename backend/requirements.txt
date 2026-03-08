@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+python-jose[cryptography]
+bcrypt
+python-dotenv
+pydantic-settings
+httpx
+youtube-transcript-api
