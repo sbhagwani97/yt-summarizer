@@ -1,9 +1,20 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import Base, engine
 from routers import auth_router, summarize_router
+from dotenv import load_dotenv
 
-app = FastAPI(title="YouTube Summarizer API")
+load_dotenv()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    Base.metadata.create_all(bind=engine)
+    yield
+
+
+app = FastAPI(title="YouTube Summarizer API", lifespan=lifespan)
 
 # CORS middleware
 app.add_middleware(
@@ -17,11 +28,6 @@ app.add_middleware(
 # Include routers
 app.include_router(auth_router.router, prefix="/api/v1")
 app.include_router(summarize_router.router, prefix="/api/v1")
-
-
-@app.on_event("startup")
-def startup_event():
-    Base.metadata.create_all(bind=engine)
 
 
 @app.get("/")

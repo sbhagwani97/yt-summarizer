@@ -1,4 +1,7 @@
+from pathlib import Path
 from pydantic_settings import BaseSettings
+
+_env_file = Path(__file__).parent / ".env"
 
 
 class Settings(BaseSettings):
@@ -10,7 +13,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite:///./youtube_summarizer.db"
 
     class Config:
-        env_file = ".env"
+        env_file = str(_env_file)
 
 
 settings = Settings()

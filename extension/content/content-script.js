@@ -390,17 +390,19 @@ async function handleLogout() {
 
 // Minimize panel
 function minimizePanel() {
-  if (!panelElement) return;
+  if (!panelElement || isMinimized) return;
 
   isMinimized = true;
   panelElement.classList.add("minimized");
+
+  const closeBtn = panelElement.querySelector(".panel-close-btn");
+  if (closeBtn) closeBtn.style.display = "none";
 
   const header = panelElement.querySelector(".panel-header");
   const openBtn = document.createElement("button");
   openBtn.className = "panel-expand-btn";
   openBtn.textContent = "Open";
   openBtn.addEventListener("click", expandPanel);
-
   header.appendChild(openBtn);
 }
 
@@ -412,9 +414,10 @@ function expandPanel() {
   panelElement.classList.remove("minimized");
 
   const openBtn = panelElement.querySelector(".panel-expand-btn");
-  if (openBtn) {
-    openBtn.remove();
-  }
+  if (openBtn) openBtn.remove();
+
+  const closeBtn = panelElement.querySelector(".panel-close-btn");
+  if (closeBtn) closeBtn.style.display = "";
 }
 
 // Remove panel
